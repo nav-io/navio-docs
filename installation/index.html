@@ -66,6 +66,14 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#check-service-status">Check Service Status</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#check-the-logs">Check the Logs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-get-testnet-coins">How to Get Testnet Coins</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-interact-with-the-daemon">How to Interact with the Daemon</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#available-commands">Available Commands</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#logs">Logs</a>
     </li>
         </ul>
@@ -275,6 +283,33 @@ main
 <pre><code class="language-sh">sudo systemctl status naviod
 sudo systemctl status navio-staker
 </code></pre>
+<h3 id="check-the-logs">Check the Logs</h3>
+<ul>
+<li>The logs for the daemon are located in <code>/home/navio/.navio/testnet3/debug.log</code>.</li>
+<li>The logs for the staker are located in <code>/home/navio/.navio/testnet3/staker.log</code>.</li>
+</ul>
+<p>To view the logs, you can use the <code>cat</code>, <code>less</code>, or <code>tail</code> commands. For example:</p>
+<pre><code class="language-sh">cat /home/navio/.navio/testnet3/debug.log
+</code></pre>
+<h3 id="how-to-get-testnet-coins">How to Get Testnet Coins</h3>
+<p>Join our Discord at <a href="https://discord.gg/kpSjQJCw">https://discord.gg/kpSjQJCw</a> and use the command <code>/faucet</code> in the <code>#testnet</code> channel.</p>
+<h3 id="how-to-interact-with-the-daemon">How to Interact with the Daemon</h3>
+<p>You need to run <code>navcoin-cli -testnet command</code> as the <code>navio</code> user. You can switch to the <code>navio</code> user or use <code>sudo</code>:</p>
+<p>To switch to the <code>navio</code> user:</p>
+<pre><code class="language-sh">sudo su - navio
+</code></pre>
+<p>Then run the command:</p>
+<pre><code class="language-sh">navcoin-cli -testnet command
+</code></pre>
+<p>Alternatively, run the command directly with <code>sudo</code>:</p>
+<pre><code class="language-sh">sudo -u navio navcoin-cli -testnet command
+</code></pre>
+<h3 id="available-commands">Available Commands</h3>
+<ul>
+<li><code>sendtoblsctaddress address amount</code>: Send coins to an address.</li>
+<li><code>lockstake amount</code>: Stake an amount of coins (minimum is 10000).</li>
+<li><code>unlockstake amount</code>: Remove from staking (the remaining staking should be 10000 at a minimum).</li>
+</ul>
 <h3 id="logs">Logs</h3>
 <p>The script logs its output to <code>/var/log/navio_install.log</code>. Check this log file if you encounter any issues during the installation.</p>
 <pre><code class="language-sh">cat /var/log/navio_install.log
