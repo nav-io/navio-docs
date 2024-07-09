@@ -181,8 +181,8 @@ build_navio() {
 
 # Function to create a default configuration file
 create_default_config() {
-    sudo mkdir -p /home/navio/.navio
-    sudo bash -c 'cat &lt;&lt; EOF &gt; /home/navio/.navio/navio.conf
+    sudo -u navio mkdir -p /home/navio/.navio
+    sudo -u navio bash -c 'cat &lt;&lt; EOF &gt; /home/navio/.navio/navio.conf
 server=1
 listen=1
 testnet=1
@@ -194,7 +194,7 @@ addnode=testnet-navio.nav.community
 rpcuser=user
 rpcpassword=password
 EOF'
-    sudo chown navio:navio /home/navio/.navio/navio.conf
+    sudo chown -R navio:navio /home/navio/.navio
 }
 
 # Function to create a wallet
