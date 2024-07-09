@@ -60,6 +60,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-script">The Script</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-installation">Post-Installation</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#check-service-status">Check Service Status</a>
@@ -128,6 +130,144 @@
 <h3 id="step-3-run-the-script">Step 3: Run the Script</h3>
 <p>Execute the script with sudo to ensure it has the necessary permissions.</p>
 <pre><code class="language-sh">sudo ./install_navio.sh
+</code></pre>
+<h2 id="the-script">The Script</h2>
+<pre><code class="language-bash">#!/bin/bash
+
+# Function to install necessary dependencies
+install_dependencies() {
+    sudo apt-get update
+    sudo apt-get install -y \
+        build-essential \
+        libtool \
+        autotools-dev \
+        automake \
+        pkg-config \
+        libssl-dev \
+        libevent-dev \
+        bsdmainutils \
+        libboost-system-dev \
+        libboost-filesystem-dev \
+        libboost-chrono-dev \
+        libboost-test-dev \
+        libboost-thread-dev \
+        libminiupnpc-dev \
+        libzmq3-dev \
+        libsqlite3-dev \
+        git \
+        software-properties-common
+}
+
+# Function to create a dedicated user
+create_user() {
+    sudo useradd -m -s /bin/bash navio
+}
+
+# Function to clone the repository
+clone_repository() {
+    if [ -d /home/navio/navio-core ]; then
+        cd /home/navio/navio-core || exit
+        sudo -u navio git pull origin master
+    else
+        sudo -u navio git clone https://github.com/nav-io/navio-core.git /home/navio/navio-core
+        cd /home/navio/navio-core || exit
+    fi
+}
+
+# Function to build the project
+build_navio() {
+    sudo -u navio ./autogen.sh
+    sudo -u navio ./configure
+    sudo -u navio make -j$(nproc)
+    sudo make install
+}
+
+# Function to create a default configuration file
+create_default_config() {
+    sudo mkdir -p /home/navio/.navio
+    sudo bash -c 'cat &lt;&lt; EOF &gt; /home/navio/.navio/navio.conf
+server=1
+listen=1
+testnet=1
+rpcuser=user
+rpcpassword=password
+
+[test]
+addnode=testnet-navio.nav.community
+rpcuser=user
+rpcpassword=password
+EOF'
+    sudo chown navio:navio /home/navio/.navio/navio.conf
+}
+
+# Function to create a wallet
+create_wallet() {
+    sudo -u navio /home/navio/navio-core/src/navio-wallet -blsct -chain=test -wallet=wallet create
+}
+
+# Function to create systemd service file for naviod
+create_naviod_service_file() {
+    sudo bash -c 'cat &lt;&lt; EOF &gt; /etc/systemd/system/naviod.service
+[Unit]
+Description=Navio Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/naviod -conf=/home/navio/.navio/navio.conf
+User=navio
+Group=navio
+Restart=always
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+}
+
+# Function to create systemd service file for navio-staker
+create_navio_staker_service_file() {
+    sudo bash -c 'cat &lt;&lt; EOF &gt; /etc/systemd/system/navio-staker.service
+[Unit]
+Description=Navio Staker
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/navio-staker -testnet -wallet=wallet
+User=navio
+Group=navio
+Restart=always
+RestartSec=10s
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+}
+
+# Function to enable and start services
+enable_and_start_services() {
+    sudo systemctl daemon-reload
+    sudo systemctl enable naviod
+    sudo systemctl start naviod
+    sudo systemctl enable navio-staker
+    sudo systemctl start navio-staker
+}
+
+# Main function to execute the script
+main() {
+    install_dependencies
+    create_user
+    clone_repository
+    build_navio
+    create_default_config
+    create_wallet
+    create_naviod_service_file
+    create_navio_staker_service_file
+    enable_and_start_services
+    echo &quot;Navio daemon and staker installation and setup complete.&quot;
+}
+
+main
 </code></pre>
 <h2 id="post-installation">Post-Installation</h2>
 <h3 id="check-service-status">Check Service Status</h3>
