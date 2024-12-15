@@ -190,7 +190,8 @@ rpcuser=user
 rpcpassword=password
 
 [test]
-addnode=testnet-navio.nav.community
+addnode=testnet.nav.io
+addnode=testnet2.nav.io
 rpcuser=user
 rpcpassword=password
 EOF'
@@ -282,14 +283,14 @@ sudo systemctl status navio-staker
 </code></pre>
 <h3 id="check-the-logs">Check the Logs</h3>
 <ul>
-<li>The logs for the daemon are located in <code>/home/navio/.navio/testnet3/debug.log</code>.</li>
-<li>The logs for the staker are located in <code>/home/navio/.navio/testnet3/staker.log</code>.</li>
+<li>The logs for the daemon are located in <code>/home/navio/.navio/testnet4/debug.log</code>.</li>
+<li>The logs for the staker are located in <code>/home/navio/.navio/testnet4/staker.log</code>.</li>
 </ul>
 <p>To view the logs, you can use the <code>cat</code>, <code>less</code>, or <code>tail</code> commands. For example:</p>
 <pre><code class="language-sh">cat /home/navio/.navio/testnet3/debug.log
 </code></pre>
 <h3 id="how-to-get-testnet-coins">How to Get Testnet Coins</h3>
-<p>Join our Discord at <a href="http://discord.gg/Rjy3RVxDjC">http://discord.gg/Rjy3RVxDjC</a> and use the command <code>/faucet</code> in the <code>#testnet</code> channel.</p>
+<p>Join our Discord at <a href="https://discord.com/invite/eBQ2QUkVXy">https://discord.com/invite/eBQ2QUkVXy</a> and use the command <code>/faucet</code> in the <code>#testnet</code> channel.</p>
 <h3 id="how-to-interact-with-the-daemon">How to Interact with the Daemon</h3>
 <p>You need to run <code>navio-cli -testnet command</code> as the <code>navio</code> user. You can switch to the <code>navio</code> user or use <code>sudo</code>:</p>
 <p>To switch to the <code>navio</code> user:</p>
