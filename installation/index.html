@@ -54,10 +54,6 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#step-1-download-the-script">Step 1: Download the Script</a>
     </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#the-script">The Script</a>
-        <ul>
     <li class="toctree-l3"><a class="reference internal" href="#step-2-make-the-script-executable">Step 2: Make the Script Executable</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#step-3-run-the-script">Step 3: Run the Script</a>
@@ -68,13 +64,7 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#check-service-status">Check Service Status</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#check-the-logs">Check the Logs</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#how-to-get-testnet-coins">How to Get Testnet Coins</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#how-to-interact-with-the-daemon">How to Interact with the Daemon</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#available-commands">Available Commands</a>
+    <li class="toctree-l3"><a class="reference internal" href="#logs">Logs</a>
     </li>
         </ul>
     </li>
@@ -127,146 +117,10 @@
 </ol>
 <h2 id="installation-steps">Installation Steps</h2>
 <h3 id="step-1-download-the-script">Step 1: Download the Script</h3>
-<p>First, copy the following script and save it as a file called <code>install_navio.sh</code> in your server.</p>
-<h2 id="the-script">The Script</h2>
-<pre><code class="language-bash">#!/bin/bash
-
-# Function to install necessary dependencies
-install_dependencies() {
-    sudo apt-get update
-    sudo apt-get install -y \
-        build-essential \
-        libtool \
-        autotools-dev \
-        automake \
-        pkg-config \
-        libssl-dev \
-        libevent-dev \
-        bsdmainutils \
-        libboost-system-dev \
-        libboost-filesystem-dev \
-        libboost-chrono-dev \
-        libboost-test-dev \
-        libboost-thread-dev \
-        libminiupnpc-dev \
-        libzmq3-dev \
-        libsqlite3-dev \
-        git \
-        software-properties-common
-}
-
-# Function to create a dedicated user
-create_user() {
-    sudo useradd -m -s /bin/bash navio
-}
-
-# Function to clone the repository
-clone_repository() {
-    if [ -d /home/navio/navio-core ]; then
-        cd /home/navio/navio-core || exit
-        sudo -u navio git pull origin master
-    else
-        sudo -u navio git clone https://github.com/nav-io/navio-core.git /home/navio/navio-core
-        cd /home/navio/navio-core || exit
-    fi
-}
-
-# Function to build the project
-build_navio() {
-    sudo -u navio ./autogen.sh
-    sudo -u navio ./configure
-    sudo -u navio make -j$(nproc)
-    sudo make install
-}
-
-# Function to create a default configuration file
-create_default_config() {
-    sudo -u navio mkdir -p /home/navio/.navio
-    sudo -u navio bash -c 'cat &lt;&lt; EOF &gt; /home/navio/.navio/navio.conf
-server=1
-listen=1
-testnet=1
-rpcuser=user
-rpcpassword=password
-
-[test]
-addnode=testnet.nav.io
-addnode=testnet2.nav.io
-rpcuser=user
-rpcpassword=password
-EOF'
-    sudo chown -R navio:navio /home/navio/.navio
-}
-
-# Function to create a wallet
-create_wallet() {
-    sudo -u navio /home/navio/navio-core/src/navio-wallet -blsct -chain=test -wallet=wallet create
-}
-
-# Function to create systemd service file for naviod
-create_naviod_service_file() {
-    sudo bash -c 'cat &lt;&lt; EOF &gt; /etc/systemd/system/naviod.service
-[Unit]
-Description=Navio Daemon
-After=network.target
-
-[Service]
-ExecStart=/usr/local/bin/naviod -conf=/home/navio/.navio/navio.conf
-User=navio
-Group=navio
-Restart=always
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
-EOF'
-}
-
-# Function to create systemd service file for navio-staker
-create_navio_staker_service_file() {
-    sudo bash -c 'cat &lt;&lt; EOF &gt; /etc/systemd/system/navio-staker.service
-[Unit]
-Description=Navio Staker
-After=network.target
-
-[Service]
-ExecStart=/usr/local/bin/navio-staker -testnet -wallet=wallet
-User=navio
-Group=navio
-Restart=always
-RestartSec=10s
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
-EOF'
-}
-
-# Function to enable and start services
-enable_and_start_services() {
-    sudo systemctl daemon-reload
-    sudo systemctl enable naviod
-    sudo systemctl start naviod
-    sudo systemctl enable navio-staker
-    sudo systemctl start navio-staker
-}
-
-# Main function to execute the script
-main() {
-    install_dependencies
-    create_user
-    clone_repository
-    build_navio
-    create_default_config
-    create_wallet
-    create_naviod_service_file
-    create_navio_staker_service_file
-    enable_and_start_services
-    echo &quot;Navio daemon and staker installation and setup complete.&quot;
-}
-
-main
+<p>First, download the installation script to your server.</p>
+<pre><code class="language-sh">curl -O https://example.com/path-to-your-script/install_navio.sh
 </code></pre>
+<p>Replace <code>https://example.com/path-to-your-script/install_navio.sh</code> with the actual URL where your script is hosted.</p>
 <h3 id="step-2-make-the-script-executable">Step 2: Make the Script Executable</h3>
 <p>Make sure the script has executable permissions.</p>
 <pre><code class="language-sh">chmod +x install_navio.sh
@@ -281,39 +135,14 @@ main
 <pre><code class="language-sh">sudo systemctl status naviod
 sudo systemctl status navio-staker
 </code></pre>
-<h3 id="check-the-logs">Check the Logs</h3>
-<ul>
-<li>The logs for the daemon are located in <code>/home/navio/.navio/testnet4/debug.log</code>.</li>
-<li>The logs for the staker are located in <code>/home/navio/.navio/testnet4/staker.log</code>.</li>
-</ul>
-<p>To view the logs, you can use the <code>cat</code>, <code>less</code>, or <code>tail</code> commands. For example:</p>
-<pre><code class="language-sh">cat /home/navio/.navio/testnet3/debug.log
+<h3 id="logs">Logs</h3>
+<p>The script logs its output to <code>/var/log/navio_install.log</code>. Check this log file if you encounter any issues during the installation.</p>
+<pre><code class="language-sh">cat /var/log/navio_install.log
 </code></pre>
-<h3 id="how-to-get-testnet-coins">How to Get Testnet Coins</h3>
-<p>Join our Discord at <a href="https://discord.com/invite/eBQ2QUkVXy">https://discord.com/invite/eBQ2QUkVXy</a> and use the command <code>/faucet</code> in the <code>#testnet</code> channel.</p>
-<h3 id="how-to-interact-with-the-daemon">How to Interact with the Daemon</h3>
-<p>You need to run <code>navio-cli -testnet command</code> as the <code>navio</code> user. You can switch to the <code>navio</code> user or use <code>sudo</code>:</p>
-<p>To switch to the <code>navio</code> user:</p>
-<pre><code class="language-sh">sudo su - navio
-</code></pre>
-<p>Then run the command:</p>
-<pre><code class="language-sh">navio-cli -testnet command
-</code></pre>
-<p>Alternatively, run the command directly with <code>sudo</code>:</p>
-<pre><code class="language-sh">sudo -u navio navio-cli -testnet command
-</code></pre>
-<h3 id="available-commands">Available Commands</h3>
-<ul>
-<li><code>getnewaddress</code>: Shows an address to receive coins.</li>
-<li><code>getbalance</code>: Shows the wallet balance</li>
-<li><code>sendtoblsctaddress address amount</code>: Send coins to an address.</li>
-<li><code>stakelock amount</code>: Stake an amount of coins (minimum is 10000).</li>
-<li><code>stakeunlock amount</code>: Remove from staking (the remaining staking should be 10000 at a minimum).</li>
-</ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>If you encounter any issues, consider the following steps:</p>
 <ul>
-<li><strong>Check the Log File</strong>: Review the log files for detailed error messages.</li>
+<li><strong>Check the Log File</strong>: Review the log file at <code>/var/log/navio_install.log</code> for detailed error messages.</li>
 <li><strong>Verify Service Status</strong>: Ensure the services are running using <code>systemctl status naviod</code> and <code>systemctl status navio-staker</code>.</li>
 <li><strong>Check Dependencies</strong>: Make sure all dependencies are installed properly. Re-run the script to ensure no steps were missed.</li>
 </ul>
