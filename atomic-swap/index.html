@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Atomic Swaps between Navio and other blockchains - Navio Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Atomic Swaps between Navio and other blockchains";
+        var mkdocs_page_input_path = "atomic-swap.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Navio Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../rpc-commands/">Token and NFT RPC commands</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Atomic Swaps between Navio and other blockchains</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#key-features">Key Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#supported-cryptocurrencies">Supported Cryptocurrencies</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#protocol-components">Protocol Components</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-hash-functions">1. Hash Functions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-script-operations">2. Script Operations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#navio-specific-operations">Navio-Specific Operations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#standard-operations">Standard Operations</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#protocol-flow">Protocol Flow</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-1-setup">Phase 1: Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-2-contract-creation">Phase 2: Contract Creation</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#bobs-contract-bitcoinlitecoin">Bob's Contract (Bitcoin/Litecoin)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#alices-contract-navio">Alice's Contract (Navio)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-3-fund-deposit">Phase 3: Fund Deposit</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#phase-4-fund-claim">Phase 4: Fund Claim</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#option-a-successful-exchange">Option A: Successful Exchange</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#option-b-refund-timeout">Option B: Refund (Timeout)</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-examples">Implementation Examples</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#navio-contract-creation">Navio Contract Creation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bitcoin-contract-creation">Bitcoin Contract Creation</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../atomic-swap-navio/">Atomic Swaps inside of the Navio blockchain</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Navio Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Atomic Swaps between Navio and other blockchains</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="atomic-swaps-protocol">Atomic Swaps Protocol</h1>
+<h2 id="overview">Overview</h2>
+<p>This document describes an atomic swap protocol that enables trustless cross-chain cryptocurrency exchanges between Navio and other cryptocurrencies that support similar scripting capabilities (such as Bitcoin and Litecoin). The protocol leverages Navio's unique BLS signature system and shared hash functions to create secure, decentralized exchanges.</p>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li><strong>Trustless</strong>: No third-party intermediaries required</li>
+<li><strong>Atomic</strong>: Either both parties receive their funds or neither does</li>
+<li><strong>Cross-chain</strong>: Works between Navio and other compatible cryptocurrencies</li>
+<li><strong>BLS-based</strong>: Utilizes Navio's OP_BLSCHECKSIG for enhanced efficiency</li>
+<li><strong>Hash-locked</strong>: Uses shared hash functions (SHA256, RIPEMD160, HASH160, HASH256)</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="supported-cryptocurrencies">Supported Cryptocurrencies</h3>
+<p>The atomic swap protocol works with cryptocurrencies that support:</p>
+<ol>
+<li><strong>Time-locked transactions</strong> (OP_CHECKLOCKTIMEVERIFY or equivalent)</li>
+<li><strong>Hash-locked transactions</strong> (OP_HASH160, OP_SHA256, etc.)</li>
+<li><strong>Signature verification</strong> (OP_CHECKSIG or OP_BLSCHECKSIG)</li>
+<li><strong>Conditional execution</strong> (OP_IF, OP_ELSE, OP_ENDIF)</li>
+</ol>
+<h2 id="protocol-components">Protocol Components</h2>
+<h3 id="1-hash-functions">1. Hash Functions</h3>
+<p>Both chains must support the same hash functions for compatibility:</p>
+<ul>
+<li><strong>SHA256</strong>: 256-bit cryptographic hash function</li>
+<li><strong>RIPEMD160</strong>: 160-bit cryptographic hash function  </li>
+<li><strong>HASH160</strong>: SHA256 followed by RIPEMD160</li>
+<li><strong>HASH256</strong>: Double SHA256</li>
+</ul>
+<h3 id="2-script-operations">2. Script Operations</h3>
+<h4 id="navio-specific-operations">Navio-Specific Operations</h4>
+<p>Navio uses <code>OP_BLSCHECKSIG</code> (opcode 0xbb) instead of the traditional <code>OP_CHECKSIG</code>:</p>
+<pre><code class="language-cpp">// Navio BLS signature verification
+OP_BLSCHECKSIG  // (pubkey -- bool)
+</code></pre>
+<h4 id="standard-operations">Standard Operations</h4>
+<p>Both chains support:</p>
+<pre><code class="language-cpp">OP_HASH160      // (data -- hash160)
+OP_SHA256       // (data -- hash256)
+OP_EQUAL        // (x y -- bool)
+OP_EQUALVERIFY  // (x y -- )
+OP_IF           // (bool -- )
+OP_ELSE         // ( -- )
+OP_ENDIF        // ( -- )
+OP_CHECKLOCKTIMEVERIFY  // (locktime -- )
+OP_CHECKSIG     // (sig pubkey -- bool) [for other chains]
+</code></pre>
+<h2 id="protocol-flow">Protocol Flow</h2>
+<h3 id="phase-1-setup">Phase 1: Setup</h3>
+<ol>
+<li><strong>Alice</strong> (Navio holder) and <strong>Bob</strong> (BTC holder) agree on:</li>
+<li>Exchange amount: <code>X NAV</code> for <code>Y BTC</code></li>
+<li>Timeout period: <code>T</code> blocks</li>
+<li>
+<p>Exchange rate and fees</p>
+</li>
+<li>
+<p><strong>Secret Generation</strong>:</p>
+</li>
+<li>Alice generates a random 32-byte secret: <code>secret_A</code></li>
+<li>Alice computes the hash: <code>hash_A = HASH160(secret_A)</code></li>
+<li>Alice shares <code>hash_A</code> with Bob</li>
+</ol>
+<h3 id="phase-2-contract-creation">Phase 2: Contract Creation</h3>
+<h4 id="bobs-contract-bitcoinlitecoin">Bob's Contract (Bitcoin/Litecoin)</h4>
+<p>Bob creates a transaction with the following script:</p>
+<pre><code class="language-bitcoin">OP_IF
+    OP_HASH160 &lt;hash_A&gt; OP_EQUALVERIFY
+    &lt;Bob's_pubkey&gt; OP_CHECKSIG
+OP_ELSE
+    &lt;locktime&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP
+    &lt;Alice's_pubkey&gt; OP_CHECKSIG
+OP_ENDIF
+</code></pre>
+<h4 id="alices-contract-navio">Alice's Contract (Navio)</h4>
+<p>Alice creates a transaction with the following script:</p>
+<pre><code class="language-navio">OP_IF
+    OP_HASH160 &lt;hash_A&gt; OP_EQUALVERIFY
+    &lt;Alice's_pubkey&gt; OP_BLSCHECKSIG
+OP_ELSE
+    &lt;locktime&gt; OP_CHECKLOCKTIMEVERIFY OP_DROP
+    &lt;Bob's_pubkey&gt; OP_BLSCHECKSIG
+OP_ENDIF
+</code></pre>
+<h3 id="phase-3-fund-deposit">Phase 3: Fund Deposit</h3>
+<ol>
+<li><strong>Bob</strong> broadcasts his contract transaction on Bitcoin/Litecoin</li>
+<li><strong>Alice</strong> verifies Bob's transaction and broadcasts her contract transaction on Navio</li>
+<li>Both parties wait for their respective transactions to be confirmed</li>
+</ol>
+<h3 id="phase-4-fund-claim">Phase 4: Fund Claim</h3>
+<h4 id="option-a-successful-exchange">Option A: Successful Exchange</h4>
+<ol>
+<li>
+<p><strong>Alice</strong> reveals her secret by spending Bob's output:
+   <code>bitcoin
+   &lt;Alice's_signature&gt; &lt;secret_A&gt; 1</code></p>
+</li>
+<li>
+<p><strong>Bob</strong> learns <code>secret_A</code> from Alice's transaction and spends Alice's output:
+   <code>navio
+   &lt;Bob's_bls_signature&gt; &lt;secret_A&gt; 1</code></p>
+</li>
+</ol>
+<h4 id="option-b-refund-timeout">Option B: Refund (Timeout)</h4>
+<p>If the exchange doesn't complete within the timeout period:</p>
+<ol>
+<li>
+<p><strong>Alice</strong> can refund her Navio by spending her own output:
+   <code>navio
+   &lt;Alice's_bls_signature&gt; &lt;dummy_data&gt; 0</code></p>
+</li>
+<li>
+<p><strong>Bob</strong> can refund his Bitcoin by spending his own output:
+   <code>bitcoin
+   &lt;Bob's_signature&gt; &lt;dummy_data&gt; 0</code></p>
+</li>
+</ol>
+<h2 id="implementation-examples">Implementation Examples</h2>
+<h3 id="navio-contract-creation">Navio Contract Creation</h3>
+<pre><code class="language-cpp">// Create Navio atomic swap contract
+CScript CreateNavioSwapContract(
+    const uint160&amp; hash,
+    const blsct::PublicKey&amp; alice_pubkey,
+    const blsct::PublicKey&amp; bob_pubkey,
+    uint32_t locktime
+) {
+    CScript script;
+    script &lt;&lt; OP_IF;
+    script &lt;&lt; OP_HASH160 &lt;&lt; ToByteVector(hash) &lt;&lt; OP_EQUALVERIFY;
+    script &lt;&lt; ToByteVector(alice_pubkey.GetVch()) &lt;&lt; OP_BLSCHECKSIG;
+    script &lt;&lt; OP_ELSE;
+    script &lt;&lt; locktime &lt;&lt; OP_CHECKLOCKTIMEVERIFY &lt;&lt; OP_DROP;
+    script &lt;&lt; ToByteVector(bob_pubkey.GetVch()) &lt;&lt; OP_BLSCHECKSIG;
+    script &lt;&lt; OP_ENDIF;
+    return script;
+}
+</code></pre>
+<h3 id="bitcoin-contract-creation">Bitcoin Contract Creation</h3>
+<pre><code class="language-cpp">// Create Bitcoin atomic swap contract
+CScript CreateBitcoinSwapContract(
+    const uint160&amp; hash,
+    const CPubKey&amp; alice_pubkey,
+    const CPubKey&amp; bob_pubkey,
+    uint32_t locktime
+) {
+    CScript script;
+    script &lt;&lt; OP_IF;
+    script &lt;&lt; OP_HASH160 &lt;&lt; ToByteVector(hash) &lt;&lt; OP_EQUALVERIFY;
+    script &lt;&lt; ToByteVector(alice_pubkey) &lt;&lt; OP_CHECKSIG;
+    script &lt;&lt; OP_ELSE;
+    script &lt;&lt; locktime &lt;&lt; OP_CHECKLOCKTIMEVERIFY &lt;&lt; OP_DROP;
+    script &lt;&lt; ToByteVector(bob_pubkey) &lt;&lt; OP_CHECKSIG;
+    script &lt;&lt; OP_ENDIF;
+    return script;
+}
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../rpc-commands/" class="btn btn-neutral float-left" title="Token and NFT RPC commands"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../atomic-swap-navio/" class="btn btn-neutral float-right" title="Atomic Swaps inside of the Navio blockchain">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../rpc-commands/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../atomic-swap-navio/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
