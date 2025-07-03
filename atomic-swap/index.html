@@ -88,7 +88,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#phase-2-contract-creation">Phase 2: Contract Creation</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#bobs-contract-bitcoinlitecoin">Bob's Contract (Bitcoin/Litecoin)</a>
+    <li class="toctree-l4"><a class="reference internal" href="#bobs-contract-bitcoin">Bob's Contract (Bitcoin)</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#alices-contract-navio">Alice's Contract (Navio)</a>
     </li>
@@ -153,7 +153,7 @@
 <li><strong>Atomic</strong>: Either both parties receive their funds or neither does</li>
 <li><strong>Cross-chain</strong>: Works between Navio and other compatible cryptocurrencies</li>
 <li><strong>BLS-based</strong>: Utilizes Navio's OP_BLSCHECKSIG for enhanced efficiency</li>
-<li><strong>Hash-locked</strong>: Uses shared hash functions (SHA256, RIPEMD160, HASH160, HASH256)</li>
+<li><strong>Hash-locked</strong>: Uses shared hash functions</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
 <h3 id="supported-cryptocurrencies">Supported Cryptocurrencies</h3>
@@ -166,13 +166,7 @@
 </ol>
 <h2 id="protocol-components">Protocol Components</h2>
 <h3 id="1-hash-functions">1. Hash Functions</h3>
-<p>Both chains must support the same hash functions for compatibility:</p>
-<ul>
-<li><strong>SHA256</strong>: 256-bit cryptographic hash function</li>
-<li><strong>RIPEMD160</strong>: 160-bit cryptographic hash function  </li>
-<li><strong>HASH160</strong>: SHA256 followed by RIPEMD160</li>
-<li><strong>HASH256</strong>: Double SHA256</li>
-</ul>
+<p>Both chains must support the same hash functions for compatibility.</p>
 <h3 id="2-script-operations">2. Script Operations</h3>
 <h4 id="navio-specific-operations">Navio-Specific Operations</h4>
 <p>Navio uses <code>OP_BLSCHECKSIG</code> (opcode 0xbb) instead of the traditional <code>OP_CHECKSIG</code>:</p>
@@ -182,8 +176,6 @@ OP_BLSCHECKSIG  // (pubkey -- bool)
 <h4 id="standard-operations">Standard Operations</h4>
 <p>Both chains support:</p>
 <pre><code class="language-cpp">OP_HASH160      // (data -- hash160)
-OP_SHA256       // (data -- hash256)
-OP_EQUAL        // (x y -- bool)
 OP_EQUALVERIFY  // (x y -- )
 OP_IF           // (bool -- )
 OP_ELSE         // ( -- )
@@ -208,7 +200,7 @@ OP_CHECKSIG     // (sig pubkey -- bool) [for other chains]
 <li>Alice shares <code>hash_A</code> with Bob</li>
 </ol>
 <h3 id="phase-2-contract-creation">Phase 2: Contract Creation</h3>
-<h4 id="bobs-contract-bitcoinlitecoin">Bob's Contract (Bitcoin/Litecoin)</h4>
+<h4 id="bobs-contract-bitcoin">Bob's Contract (Bitcoin)</h4>
 <p>Bob creates a transaction with the following script:</p>
 <pre><code class="language-bitcoin">OP_IF
     OP_HASH160 &lt;hash_A&gt; OP_EQUALVERIFY
@@ -228,9 +220,10 @@ OP_ELSE
     &lt;Bob's_pubkey&gt; OP_BLSCHECKSIG
 OP_ENDIF
 </code></pre>
+<p>The spending key of this output, must be set to the zero value, as to ensure the spending conditions are exclusively governed by the script.</p>
 <h3 id="phase-3-fund-deposit">Phase 3: Fund Deposit</h3>
 <ol>
-<li><strong>Bob</strong> broadcasts his contract transaction on Bitcoin/Litecoin</li>
+<li><strong>Bob</strong> broadcasts his contract transaction on Bitcoin</li>
 <li><strong>Alice</strong> verifies Bob's transaction and broadcasts her contract transaction on Navio</li>
 <li>Both parties wait for their respective transactions to be confirmed</li>
 </ol>
