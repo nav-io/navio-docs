@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>BLSCT Reference - Navio Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "BLSCT Reference";
+        var mkdocs_page_input_path = "blsct-reference.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Navio Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="../electrum.md">Setting up a Electrumx instance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../rpc-commands/">Token and NFT RPC commands</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">BLSCT Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#blsct-rpc-methods">BLSCT RPC Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#token-and-nft-creation">Token and NFT Creation</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#createtoken">createtoken</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#createnft">createnft</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#token-and-nft-minting">Token and NFT Minting</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#minttoken">minttoken</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mintnft">mintnft</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#balance-queries">Balance Queries</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#getblsctbalance">getblsctbalance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#gettokenbalance">gettokenbalance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#getnftbalance">getnftbalance</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#transfer-commands">Transfer Commands</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#sendtoblsctaddress">sendtoblsctaddress</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sendtokentoblsctaddress">sendtokentoblsctaddress</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sendnfttoblsctaddress">sendnfttoblsctaddress</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#transaction-management">Transaction Management</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#listblscttransactions">listblscttransactions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#listblsctunspent">listblsctunspent</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#staking-commands">Staking Commands</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#stakelock">stakelock</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#stakeunlock">stakeunlock</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wallet-management">Wallet Management</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#setblsctseed">setblsctseed</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#advanced-transaction-operations">Advanced Transaction Operations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#createblsctrawtransaction">createblsctrawtransaction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fundblsctrawtransaction">fundblsctrawtransaction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#signblsctrawtransaction">signblsctrawtransaction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#decodeblsctrawtransaction">decodeblsctrawtransaction</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recovery-and-proof-operations">Recovery and Proof Operations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#createblsctbalanceproof">createblsctbalanceproof</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#getblsctrecoverydata">getblsctrecoverydata</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#getblsctrecoverydatawithnonce">getblsctrecoverydatawithnonce</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#message-signing">Message Signing</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#signblsmessage">signblsmessage</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#verifyblsmessage">verifyblsmessage</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#opcodes">Opcodes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#op_blschecksig">OP_BLSCHECKSIG</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#transaction-structure">Transaction Structure</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#serialization-format">Serialization Format</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#basic-transaction-structure">Basic Transaction Structure</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#extended-format-with-witness">Extended Format (with Witness)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#blsct-extension">BLSCT Extension</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ctxin-structure">CTxIn Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ctxout-structure">CTxOut Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ctxoutblsctdata-structure">CTxOutBLSCTData Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tokenid-structure">TokenId Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#de-serialization-example">De-serialization Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#block-structure">Block Structure</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cblockheader-structure">CBlockHeader Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cblock-structure">CBlock Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#de-serialization-example_1">De-serialization Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-notes">Additional Notes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#output-hash-indexing">Output Hash Indexing</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#blsct-transaction-detection">BLSCT Transaction Detection</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#range-proofs">Range Proofs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#token-and-nft-support">Token and NFT Support</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../atomic-swap/">Atomic Swaps between Navio and other blockchains</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../atomic-swap-navio/">Atomic Swaps inside of the Navio blockchain</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Navio Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">BLSCT Reference</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="blsct-reference-documentation">BLSCT Reference Documentation</h1>
+<p>This document provides comprehensive reference documentation for BLSCT (BLS Confidential Transactions) in Navio, including all RPC methods, opcodes, and transaction/block structures for de-serialization.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#blsct-rpc-methods">BLSCT RPC Methods</a></li>
+<li><a href="#opcodes">Opcodes</a></li>
+<li><a href="#transaction-structure">Transaction Structure</a></li>
+<li><a href="#block-structure">Block Structure</a></li>
+</ol>
+<h2 id="blsct-rpc-methods">BLSCT RPC Methods</h2>
+<p>All BLSCT RPC methods are prefixed with the <code>blsct</code> category. Below is a complete reference of all available methods.</p>
+<h3 id="token-and-nft-creation">Token and NFT Creation</h3>
+<h4 id="createtoken"><code>createtoken</code></h4>
+<p>Creates a new token with specified metadata and maximum supply.</p>
+<p><strong>Method:</strong> <code>createtoken</code></p>
+<p><strong>Parameters:</strong>
+- <code>metadata</code> (object, required): Token metadata as key-value pairs
+- <code>max_supply</code> (amount, required): Maximum supply of the token</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;hash&quot;: &quot;transaction_hash&quot;,
+  &quot;tokenId&quot;: &quot;token_id&quot;
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli createtoken '{&quot;name&quot;:&quot;MyToken&quot;,&quot;symbol&quot;:&quot;MTK&quot;,&quot;description&quot;:&quot;A sample token&quot;}' 1000000
+</code></pre>
+<h4 id="createnft"><code>createnft</code></h4>
+<p>Creates a new NFT collection with specified metadata and maximum supply.</p>
+<p><strong>Method:</strong> <code>createnft</code></p>
+<p><strong>Parameters:</strong>
+- <code>metadata</code> (object, required): NFT collection metadata as key-value pairs
+- <code>max_supply</code> (number, required): Maximum number of NFTs in the collection</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;hash&quot;: &quot;transaction_hash&quot;,
+  &quot;tokenId&quot;: &quot;token_id&quot;
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli createnft '{&quot;name&quot;:&quot;MyNFTCollection&quot;,&quot;description&quot;:&quot;A collection of unique NFTs&quot;}' 1000
+</code></pre>
+<h3 id="token-and-nft-minting">Token and NFT Minting</h3>
+<h4 id="minttoken"><code>minttoken</code></h4>
+<p>Mints additional tokens to a specified address. Only the token creator can mint new tokens.</p>
+<p><strong>Method:</strong> <code>minttoken</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID (hex string)
+- <code>address</code> (string, required): BLSCT address to receive the minted tokens
+- <code>amount</code> (amount, required): Amount of tokens to mint</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli minttoken &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot; &quot;navio1...&quot; 1000
+</code></pre>
+<h4 id="mintnft"><code>mintnft</code></h4>
+<p>Mints a specific NFT from a collection to an address.</p>
+<p><strong>Method:</strong> <code>mintnft</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID (hex string)
+- <code>nft_id</code> (number, required): The NFT ID to mint
+- <code>address</code> (string, required): BLSCT address to receive the NFT
+- <code>metadata</code> (object, required): NFT-specific metadata</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli mintnft &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot; 1 &quot;navio1...&quot; '{&quot;name&quot;:&quot;Mona Lisa&quot;,&quot;artist&quot;:&quot;Da Vinci&quot;}'
+</code></pre>
+<h3 id="balance-queries">Balance Queries</h3>
+<h4 id="getblsctbalance"><code>getblsctbalance</code></h4>
+<p>Returns the total available BLSCT balance in the wallet.</p>
+<p><strong>Method:</strong> <code>getblsctbalance</code></p>
+<p><strong>Parameters:</strong>
+- <code>minconf</code> (number, optional, default=0): Minimum confirmations required
+- <code>include_watchonly</code> (boolean, optional): Include balance in watch-only addresses
+- <code>avoid_reuse</code> (boolean, optional, default=true): Exclude balance in dirty outputs</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;1.23456789&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli getblsctbalance
+</code></pre>
+<h4 id="gettokenbalance"><code>gettokenbalance</code></h4>
+<p>Returns the total available balance of a specific token.</p>
+<p><strong>Method:</strong> <code>gettokenbalance</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID (hex string)
+- <code>dummy</code> (string, optional): Must be excluded or set to "*" (for backward compatibility)
+- <code>minconf</code> (number, optional, default=0): Minimum confirmations required
+- <code>include_watchonly</code> (boolean, optional): Include balance in watch-only addresses
+- <code>avoid_reuse</code> (boolean, optional, default=true): Exclude balance in dirty outputs</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;1000.0&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli gettokenbalance &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot;
+</code></pre>
+<h4 id="getnftbalance"><code>getnftbalance</code></h4>
+<p>Returns the NFTs owned from a specific collection.</p>
+<p><strong>Method:</strong> <code>getnftbalance</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID of the NFT collection (hex string)
+- <code>dummy</code> (string, optional): Must be excluded or set to "*" (for backward compatibility)
+- <code>minconf</code> (number, optional, default=0): Minimum confirmations required
+- <code>include_watchonly</code> (boolean, optional): Include balance in watch-only addresses
+- <code>avoid_reuse</code> (boolean, optional, default=true): Exclude balance in dirty outputs</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;index&quot;: &quot;1&quot;,
+    &quot;metadata&quot;: [
+      {&quot;key&quot;: &quot;name&quot;, &quot;value&quot;: &quot;Mona Lisa&quot;},
+      {&quot;key&quot;: &quot;artist&quot;, &quot;value&quot;: &quot;Da Vinci&quot;}
+    ]
+  }
+]
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli getnftbalance &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot;
+</code></pre>
+<h3 id="transfer-commands">Transfer Commands</h3>
+<h4 id="sendtoblsctaddress"><code>sendtoblsctaddress</code></h4>
+<p>Sends NAV to a BLSCT address.</p>
+<p><strong>Method:</strong> <code>sendtoblsctaddress</code></p>
+<p><strong>Parameters:</strong>
+- <code>address</code> (string, required): The BLSCT address to send to
+- <code>amount</code> (amount, required): The amount in NAV to send
+- <code>memo</code> (string, optional, default=""): A memo for the transaction
+- <code>verbose</code> (boolean, optional, default=false): Return extra transaction information</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli sendtoblsctaddress &quot;navio1...&quot; 0.1 &quot;Payment&quot;
+</code></pre>
+<h4 id="sendtokentoblsctaddress"><code>sendtokentoblsctaddress</code></h4>
+<p>Sends tokens to a BLSCT address.</p>
+<p><strong>Method:</strong> <code>sendtokentoblsctaddress</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID (hex string)
+- <code>address</code> (string, required): The BLSCT address to send to
+- <code>amount</code> (amount, required): The amount of tokens to send
+- <code>memo</code> (string, optional, default=""): A memo for the transaction
+- <code>verbose</code> (boolean, optional, default=false): Return extra transaction information</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli sendtokentoblsctaddress &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot; &quot;navio1...&quot; 1000 &quot;Payment&quot;
+</code></pre>
+<h4 id="sendnfttoblsctaddress"><code>sendnfttoblsctaddress</code></h4>
+<p>Sends an NFT to a BLSCT address.</p>
+<p><strong>Method:</strong> <code>sendnfttoblsctaddress</code></p>
+<p><strong>Parameters:</strong>
+- <code>token_id</code> (string, required): The token ID of the NFT collection (hex string)
+- <code>nft_id</code> (number, required): The specific NFT ID to send
+- <code>address</code> (string, required): The BLSCT address to send to
+- <code>memo</code> (string, optional, default=""): A memo for the transaction
+- <code>verbose</code> (boolean, optional, default=false): Return extra transaction information</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli sendnfttoblsctaddress &quot;d46a375d31843d6a303dc7a8c0e0cccaa2d89f442052226fd5337b4d77afcc80&quot; 1 &quot;navio1...&quot; &quot;Gift NFT&quot;
+</code></pre>
+<h3 id="transaction-management">Transaction Management</h3>
+<h4 id="listblscttransactions"><code>listblscttransactions</code></h4>
+<p>Lists BLSCT transactions in the wallet.</p>
+<p><strong>Method:</strong> <code>listblscttransactions</code></p>
+<p><strong>Parameters:</strong>
+- <code>label</code> (string, optional): Filter by label name
+- <code>count</code> (number, optional, default=10): Number of transactions to return
+- <code>skip</code> (number, optional, default=0): Number of transactions to skip
+- <code>include_watchonly</code> (boolean, optional): Include transactions to watch-only addresses</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;account&quot;: &quot;account_name&quot;,
+    &quot;address&quot;: &quot;address&quot;,
+    &quot;category&quot;: &quot;send|receive&quot;,
+    &quot;amount&quot;: 1.23,
+    &quot;label&quot;: &quot;label&quot;,
+    &quot;vout&quot;: 0,
+    &quot;confirmations&quot;: 6,
+    &quot;blockhash&quot;: &quot;block_hash&quot;,
+    &quot;blockindex&quot;: 1,
+    &quot;blocktime&quot;: 1234567890,
+    &quot;txid&quot;: &quot;transaction_hash&quot;,
+    &quot;time&quot;: 1234567890,
+    &quot;timereceived&quot;: 1234567890,
+    &quot;comment&quot;: &quot;comment&quot;,
+    &quot;to&quot;: &quot;recipient_address&quot;
+  }
+]
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli listblscttransactions
+</code></pre>
+<h4 id="listblsctunspent"><code>listblsctunspent</code></h4>
+<p>Lists unspent BLSCT outputs in the wallet.</p>
+<p><strong>Method:</strong> <code>listblsctunspent</code></p>
+<p><strong>Parameters:</strong>
+- <code>minconf</code> (number, optional, default=1): Minimum confirmations required
+- <code>maxconf</code> (number, optional, default=9999999): Maximum confirmations
+- <code>addresses</code> (array, optional): Array of addresses to filter by
+- <code>include_unsafe</code> (boolean, optional, default=true): Include outputs that are not safe to spend
+- <code>query_options</code> (object, optional): JSON object with query options</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;txid&quot;: &quot;transaction_hash&quot;,
+    &quot;vout&quot;: 0,
+    &quot;address&quot;: &quot;address&quot;,
+    &quot;account&quot;: &quot;account_name&quot;,
+    &quot;scriptPubKey&quot;: &quot;script&quot;,
+    &quot;amount&quot;: 1.23,
+    &quot;confirmations&quot;: 6,
+    &quot;spendable&quot;: true,
+    &quot;solvable&quot;: true,
+    &quot;safe&quot;: true
+  }
+]
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli listblsctunspent
+</code></pre>
+<h3 id="staking-commands">Staking Commands</h3>
+<h4 id="stakelock"><code>stakelock</code></h4>
+<p>Locks an amount for staking.</p>
+<p><strong>Method:</strong> <code>stakelock</code></p>
+<p><strong>Parameters:</strong>
+- <code>amount</code> (amount, required): Amount to lock for staking
+- <code>verbose</code> (boolean, optional, default=false): Return extra transaction information</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli stakelock 1000
+</code></pre>
+<h4 id="stakeunlock"><code>stakeunlock</code></h4>
+<p>Unlocks previously locked BLSCT outputs.</p>
+<p><strong>Method:</strong> <code>stakeunlock</code></p>
+<p><strong>Parameters:</strong>
+- <code>amount</code> (amount, required): Amount to unlock
+- <code>verbose</code> (boolean, optional, default=false): Return extra transaction information</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;transaction_hash&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli stakeunlock 1000
+</code></pre>
+<h3 id="wallet-management">Wallet Management</h3>
+<h4 id="setblsctseed"><code>setblsctseed</code></h4>
+<p>Set or generate a new BLSCT wallet seed.</p>
+<p><strong>Method:</strong> <code>setblsctseed</code></p>
+<p><strong>Parameters:</strong>
+- <code>seed</code> (string, optional): The WIF private key to use as the new HD seed. If omitted, a random seed is generated.</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">null
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli setblsctseed
+</code></pre>
+<h3 id="advanced-transaction-operations">Advanced Transaction Operations</h3>
+<h4 id="createblsctrawtransaction"><code>createblsctrawtransaction</code></h4>
+<p>Creates an unsigned BLSCT transaction.</p>
+<p><strong>Method:</strong> <code>createblsctrawtransaction</code></p>
+<p><strong>Parameters:</strong>
+- <code>inputs</code> (array, required): Array of input objects, each containing:
+  - <code>txid</code> (string, required): Transaction ID
+  - <code>value</code> (number, optional): Input value in satoshis
+  - <code>gamma</code> (string, optional): Gamma value (hex string)
+  - <code>private_key</code> (string, optional): Private key for signing (hex string)
+  - <code>is_staked_commitment</code> (boolean, optional): Whether input is a staked commitment
+  - <code>scriptSig</code> (string, optional): ScriptSig in hex format
+- <code>outputs</code> (array, required): Array of output objects, each containing:
+  - <code>address</code> (string, optional): BLSCT address to send to
+  - <code>amount</code> (amount, required): Amount to send
+  - <code>memo</code> (string, optional): Memo for the transaction
+  - <code>token_id</code> (string, optional): Token ID for token transactions
+  - <code>script</code> (string, optional): Script in hex format
+  - <code>nonce</code> (string, optional): Nonce for this output (hex string)</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;hex_transaction_string&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli createblsctrawtransaction '[{&quot;txid&quot;:&quot;myid&quot;,&quot;value&quot;:1000000}]' '[{&quot;address&quot;:&quot;navio1...&quot;,&quot;amount&quot;:0.01}]'
+</code></pre>
+<h4 id="fundblsctrawtransaction"><code>fundblsctrawtransaction</code></h4>
+<p>Adds inputs to a BLSCT transaction until it has enough value to cover outputs and fee.</p>
+<p><strong>Method:</strong> <code>fundblsctrawtransaction</code></p>
+<p><strong>Parameters:</strong>
+- <code>hexstring</code> (string, required): The hex string of the raw transaction
+- <code>changeaddress</code> (string, optional): The BLSCT address to receive the change</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;hex_transaction_string&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli fundblsctrawtransaction &quot;hexstring&quot; &quot;navio1...&quot;
+</code></pre>
+<h4 id="signblsctrawtransaction"><code>signblsctrawtransaction</code></h4>
+<p>Signs a BLSCT raw transaction by adding BLSCT signatures.</p>
+<p><strong>Method:</strong> <code>signblsctrawtransaction</code></p>
+<p><strong>Parameters:</strong>
+- <code>hexstring</code> (string, required): The transaction hex string</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">&quot;hex_signed_transaction_string&quot;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli signblsctrawtransaction &quot;hexstring&quot;
+</code></pre>
+<h4 id="decodeblsctrawtransaction"><code>decodeblsctrawtransaction</code></h4>
+<p>Decodes a BLSCT raw transaction and returns a JSON object describing the transaction structure.</p>
+<p><strong>Method:</strong> <code>decodeblsctrawtransaction</code></p>
+<p><strong>Parameters:</strong>
+- <code>hexstring</code> (string, required): The transaction hex string</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;inputs&quot;: [
+    {
+      &quot;txid&quot;: &quot;transaction_id&quot;,
+      &quot;value&quot;: 1000000,
+      &quot;gamma&quot;: &quot;gamma_hex&quot;,
+      &quot;is_staked_commitment&quot;: false
+    }
+  ],
+  &quot;outputs&quot;: [
+    {
+      &quot;amount&quot;: &quot;0.01&quot;,
+      &quot;blinding_key&quot;: &quot;blinding_key_hex&quot;,
+      &quot;gamma&quot;: &quot;gamma_hex&quot;
+    }
+  ],
+  &quot;fee&quot;: &quot;0.0001&quot;
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli decodeblsctrawtransaction &quot;hexstring&quot;
+</code></pre>
+<h3 id="recovery-and-proof-operations">Recovery and Proof Operations</h3>
+<h4 id="createblsctbalanceproof"><code>createblsctbalanceproof</code></h4>
+<p>Creates a zero-knowledge proof that the wallet has at least the specified balance.</p>
+<p><strong>Method:</strong> <code>createblsctbalanceproof</code></p>
+<p><strong>Parameters:</strong>
+- <code>amount</code> (amount, required): The minimum balance to prove
+- <code>additional_commitment</code> (string, optional): Additional commitment for the proof signature</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;proof&quot;: &quot;serialized_proof_hex&quot;
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli createblsctbalanceproof 1.0 &quot;order id: 100&quot;
+</code></pre>
+<h4 id="getblsctrecoverydata"><code>getblsctrecoverydata</code></h4>
+<p>Gets BLSCT recovery data for transaction output(s).</p>
+<p><strong>Method:</strong> <code>getblsctrecoverydata</code></p>
+<p><strong>Parameters:</strong>
+- <code>txid_or_hex</code> (string, required): The transaction ID or raw transaction hex
+- <code>vout</code> (number, optional): The output index. If omitted, shows data for all outputs.</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;outputs&quot;: [
+    {
+      &quot;vout&quot;: 0,
+      &quot;out_hash&quot;: &quot;output_hash_hex&quot;,
+      &quot;script&quot;: &quot;script_hex&quot;,
+      &quot;amount&quot;: &quot;1.0&quot;,
+      &quot;gamma&quot;: &quot;gamma_hex&quot;,
+      &quot;message&quot;: &quot;memo&quot;
+    }
+  ]
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli getblsctrecoverydata &quot;mytxid&quot; 1
+</code></pre>
+<h4 id="getblsctrecoverydatawithnonce"><code>getblsctrecoverydatawithnonce</code></h4>
+<p>Gets BLSCT recovery data for outputs in a transaction using a specified nonce. Only accepts hex transaction format.</p>
+<p><strong>Method:</strong> <code>getblsctrecoverydatawithnonce</code></p>
+<p><strong>Parameters:</strong>
+- <code>hexstring</code> (string, required): The transaction hex string
+- <code>nonce</code> (string, required): The nonce to use for recovery (hex string)
+- <code>vout</code> (number, optional): If specified, only return data for this output index</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;txid&quot;: &quot;transaction_id&quot;,
+  &quot;outputs&quot;: [
+    {
+      &quot;vout&quot;: 0,
+      &quot;out_hash&quot;: &quot;output_hash_hex&quot;,
+      &quot;script&quot;: &quot;script_hex&quot;,
+      &quot;amount&quot;: &quot;1.0&quot;,
+      &quot;gamma&quot;: &quot;gamma_hex&quot;,
+      &quot;message&quot;: &quot;memo&quot;
+    }
+  ]
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli getblsctrecoverydatawithnonce &quot;hexstring&quot; &quot;nonce_hex&quot; 1
+</code></pre>
+<h3 id="message-signing">Message Signing</h3>
+<h4 id="signblsmessage"><code>signblsmessage</code></h4>
+<p>Signs a message using a BLS private key.</p>
+<p><strong>Method:</strong> <code>signblsmessage</code></p>
+<p><strong>Parameters:</strong>
+- <code>private_key</code> (string, required): The BLS private key in hex format (32 bytes)
+- <code>message</code> (string, required): The message to sign</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">{
+  &quot;signature&quot;: &quot;signature_hex&quot;,
+  &quot;public_key&quot;: &quot;public_key_hex&quot;
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli signblsmessage &quot;private_key_hex&quot; &quot;Hello, world!&quot;
+</code></pre>
+<h4 id="verifyblsmessage"><code>verifyblsmessage</code></h4>
+<p>Verifies a BLS message signature.</p>
+<p><strong>Method:</strong> <code>verifyblsmessage</code></p>
+<p><strong>Parameters:</strong>
+- <code>public_key</code> (string, required): The BLS public key in hex format (48 bytes)
+- <code>message</code> (string, required): The message that was signed
+- <code>signature</code> (string, required): The signature in hex format (96 bytes)</p>
+<p><strong>Returns:</strong></p>
+<pre><code class="language-json">true
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">navio-cli verifyblsmessage &quot;public_key_hex&quot; &quot;Hello, world!&quot; &quot;signature_hex&quot;
+</code></pre>
+<h2 id="opcodes">Opcodes</h2>
+<p>Navio introduces a new opcode for BLS signature verification:</p>
+<h3 id="op_blschecksig">OP_BLSCHECKSIG</h3>
+<p><strong>Opcode:</strong> <code>0xb3</code> (also known as <code>OP_NOP4</code>)</p>
+<p><strong>Stack Operation:</strong> <code>(pubkey -- bool)</code></p>
+<p><strong>Description:</strong>
+Verifies a BLS signature against a public key. This opcode replaces the traditional <code>OP_CHECKSIG</code> for BLS-based signature verification in Navio.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-script">&lt;pubkey&gt; OP_BLSCHECKSIG
+</code></pre>
+<p><strong>Example Script:</strong></p>
+<pre><code class="language-script">&lt;BLS_public_key&gt; OP_BLSCHECKSIG
+</code></pre>
+<p><strong>Notes:</strong>
+- The public key must be a valid BLS public key (48 bytes)
+- The signature must be a valid BLS signature (96 bytes)
+- Returns <code>1</code> (true) if the signature is valid, <code>0</code> (false) otherwise
+- Used in atomic swaps and other BLS-based operations</p>
+<h2 id="transaction-structure">Transaction Structure</h2>
+<p>BLSCT transactions extend the standard Bitcoin transaction format with additional fields for confidential transactions.</p>
+<h3 id="serialization-format">Serialization Format</h3>
+<h4 id="basic-transaction-structure">Basic Transaction Structure</h4>
+<pre><code>int32_t nVersion
+std::vector&lt;CTxIn&gt; vin
+std::vector&lt;CTxOut&gt; vout
+uint32_t nLockTime
+</code></pre>
+<h4 id="extended-format-with-witness">Extended Format (with Witness)</h4>
+<pre><code>int32_t nVersion
+unsigned char dummy = 0x00
+unsigned char flags (!= 0)
+std::vector&lt;CTxIn&gt; vin
+std::vector&lt;CTxOut&gt; vout
+if (flags &amp; 1):
+    CScriptWitness scriptWitness (deserialized into CTxIn)
+uint32_t nLockTime
+</code></pre>
+<h4 id="blsct-extension">BLSCT Extension</h4>
+<p>If the transaction is a BLSCT transaction (<code>tx.IsBLSCT()</code> returns true):</p>
+<pre><code>blsct::Signature txSig
+</code></pre>
+<h3 id="ctxin-structure">CTxIn Structure</h3>
+<pre><code class="language-cpp">class CTxIn {
+    COutPoint prevout;        // Output hash (Outid type)
+    CScript scriptSig;        // Script signature
+    uint32_t nSequence;       // Sequence number
+    CScriptWitness scriptWitness; // Witness data
+};
+</code></pre>
+<p><strong>COutPoint:</strong></p>
+<pre><code class="language-cpp">class COutPoint {
+    Outid hash;  // Output hash (32 bytes), not transaction ID
+};
+</code></pre>
+<p><strong>Note:</strong> Navio uses output hash indexing instead of (transaction ID, output index) pairs.</p>
+<h3 id="ctxout-structure">CTxOut Structure</h3>
+<pre><code class="language-cpp">class CTxOut {
+    CAmount nValue;              // Value (or max if flags present)
+    CScript scriptPubKey;        // Script public key
+    CTxOutBLSCTData blsctData;   // BLSCT-specific data
+    TokenId tokenId;             // Token ID (if token/NFT)
+    blsct::VectorPredicate predicate; // Predicate (if present)
+};
+</code></pre>
+<p><strong>Serialization Flags:</strong>
+- <code>BLSCT_MARKER</code> (0x1 &lt;&lt; 0): Transaction has BLSCT data
+- <code>TOKEN_MARKER</code> (0x1 &lt;&lt; 1): Transaction has token data
+- <code>PREDICATE_MARKER</code> (0x1 &lt;&lt; 2): Transaction has predicate
+- <code>TRANSPARENT_VALUE_MARKER</code> (0x1 &lt;&lt; 3): Value is transparent (not hidden)</p>
+<p><strong>Serialization Logic:</strong>
+1. If any flags are set, serialize <code>std::numeric_limits&lt;CAmount&gt;::max()</code> as a marker
+2. Serialize flags
+3. If <code>TRANSPARENT_VALUE_MARKER</code> is set, serialize <code>nValue</code>
+4. Serialize <code>scriptPubKey</code>
+5. If <code>BLSCT_MARKER</code> is set, serialize <code>blsctData</code>
+6. If <code>TOKEN_MARKER</code> is set, serialize <code>tokenId</code>
+7. If <code>PREDICATE_MARKER</code> is set, serialize <code>predicate</code></p>
+<h3 id="ctxoutblsctdata-structure">CTxOutBLSCTData Structure</h3>
+<pre><code class="language-cpp">class CTxOutBLSCTData {
+    bulletproofs_plus::RangeProof&lt;Mcl&gt; rangeProof;  // Range proof
+    MclG1Point spendingKey;                          // Spending public key
+    MclG1Point blindingKey;                          // Blinding public key
+    MclG1Point ephemeralKey;                         // Ephemeral public key
+    uint16_t viewTag;                                // View tag
+};
+</code></pre>
+<p><strong>Serialization Order:</strong>
+1. <code>rangeProof</code>
+2. <code>spendingKey</code>
+3. <code>blindingKey</code>
+4. <code>ephemeralKey</code>
+5. <code>viewTag</code></p>
+<h3 id="tokenid-structure">TokenId Structure</h3>
+<pre><code class="language-cpp">class TokenId {
+    uint256 tokenId;  // Token ID hash (32 bytes)
+    uint64_t nftId;   // NFT ID (if NFT, otherwise 0)
+};
+</code></pre>
+<p><strong>Serialization:</strong>
+- Serializes as <code>uint256</code> (token ID) followed by <code>uint64_t</code> (NFT ID) if NFT</p>
+<h3 id="de-serialization-example">De-serialization Example</h3>
+<pre><code class="language-cpp">// Pseudo-code for de-serializing a BLSCT transaction
+
+// Read version
+int32_t version;
+stream &gt;&gt; version;
+
+// Read inputs (with witness handling)
+std::vector&lt;CTxIn&gt; vin;
+unsigned char flags = 0;
+stream &gt;&gt; vin;
+if (vin.empty() &amp;&amp; allow_witness) {
+    stream &gt;&gt; flags;
+    if (flags != 0) {
+        stream &gt;&gt; vin;
+        stream &gt;&gt; vout;
+    }
+} else {
+    stream &gt;&gt; vout;
+}
+
+// Read witness if present
+if ((flags &amp; 1) &amp;&amp; allow_witness) {
+    for (auto&amp; input : vin) {
+        stream &gt;&gt; input.scriptWitness.stack;
+    }
+}
+
+// Read locktime
+uint32_t nLockTime;
+stream &gt;&gt; nLockTime;
+
+// Read BLSCT signature if transaction is BLSCT
+if (transaction.IsBLSCT()) {
+    blsct::Signature txSig;
+    stream &gt;&gt; txSig;
+}
+</code></pre>
+<h2 id="block-structure">Block Structure</h2>
+<p>Navio blocks extend the standard Bitcoin block format with Proof of Stake (PoS) support.</p>
+<h3 id="cblockheader-structure">CBlockHeader Structure</h3>
+<pre><code class="language-cpp">class CBlockHeader {
+    int32_t nVersion;          // Block version (with BLSCT bit)
+    uint256 hashPrevBlock;     // Previous block hash
+    uint256 hashMerkleRoot;    // Merkle root
+    uint32_t nTime;            // Block timestamp
+    uint32_t nBits;            // Difficulty target
+    uint32_t nNonce;           // Nonce
+};
+</code></pre>
+<p><strong>Version Bits:</strong>
+- <code>VERSION_BIT_POS</code> (0x01000000UL): Proof of Stake block
+- <code>VERSION_BIT_BLSCT</code> (0x40000000UL): BLSCT-enabled block</p>
+<p><strong>Serialization:</strong></p>
+<pre><code>int32_t nVersion
+uint256 hashPrevBlock
+uint256 hashMerkleRoot
+uint32_t nTime
+uint32_t nBits
+uint32_t nNonce
+</code></pre>
+<h3 id="cblock-structure">CBlock Structure</h3>
+<pre><code class="language-cpp">class CBlock : public CBlockHeader {
+    blsct::ProofOfStake posProof;  // PoS proof (if PoS block)
+    std::vector&lt;CTransactionRef&gt; vtx; // Transactions
+    mutable bool fChecked;            // Memory-only flag
+};
+</code></pre>
+<p><strong>Serialization:</strong></p>
+<pre><code>CBlockHeader (base class)
+if (IsProofOfStake()):
+    blsct::ProofOfStake posProof
+    std::vector&lt;CTransactionRef&gt; vtx
+else:
+    std::vector&lt;CTransactionRef&gt; vtx
+</code></pre>
+<h3 id="de-serialization-example_1">De-serialization Example</h3>
+<pre><code class="language-cpp">// Pseudo-code for de-serializing a Navio block
+
+CBlock block;
+
+// Read header
+stream &gt;&gt; block.nVersion;
+stream &gt;&gt; block.hashPrevBlock;
+stream &gt;&gt; block.hashMerkleRoot;
+stream &gt;&gt; block.nTime;
+stream &gt;&gt; block.nBits;
+stream &gt;&gt; block.nNonce;
+
+// Read PoS proof if PoS block
+if (block.IsProofOfStake()) {
+    stream &gt;&gt; block.posProof;
+}
+
+// Read transactions
+stream &gt;&gt; block.vtx;
+</code></pre>
+<h2 id="additional-notes">Additional Notes</h2>
+<h3 id="output-hash-indexing">Output Hash Indexing</h3>
+<p>Navio uses <strong>output hash indexing</strong> instead of traditional (transaction ID, output index) pairs. This means:</p>
+<ul>
+<li><code>COutPoint.hash</code> contains the output hash (32 bytes), not the transaction ID</li>
+<li>Outputs are identified by their hash, enabling direct lookup</li>
+<li>This is essential for BLSCT privacy features</li>
+</ul>
+<h3 id="blsct-transaction-detection">BLSCT Transaction Detection</h3>
+<p>A transaction is considered a BLSCT transaction if:
+- It has at least one output with BLSCT data (<code>HasBLSCTRangeProof()</code> or <code>HasBLSCTKeys()</code>)
+- The transaction signature field (<code>txSig</code>) is present</p>
+<h3 id="range-proofs">Range Proofs</h3>
+<p>BLSCT uses Bulletproofs+ for range proofs, which prove that a value is within a valid range without revealing the actual value.</p>
+<h3 id="token-and-nft-support">Token and NFT Support</h3>
+<ul>
+<li><strong>Tokens</strong>: Fungible assets identified by <code>tokenId</code> (uint256)</li>
+<li><strong>NFTs</strong>: Non-fungible assets identified by <code>tokenId</code> (uint256) + <code>nftId</code> (uint64)</li>
+<li>Both use the same BLSCT infrastructure for privacy</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../rpc-commands/" class="btn btn-neutral float-left" title="Token and NFT RPC commands"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../atomic-swap/" class="btn btn-neutral float-right" title="Atomic Swaps between Navio and other blockchains">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../rpc-commands/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../atomic-swap/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

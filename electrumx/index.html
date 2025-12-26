@@ -56,6 +56,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../blsct-reference/">BLSCT Reference</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../atomic-swap/">Atomic Swaps between Navio and other blockchains</a>
                 </li>
               </ul>
@@ -269,6 +273,111 @@ sudo ufw allow 40004/tcp  # WSS
 </ol>
 <pre><code class="language-bash">sudo -u electrumx /home/electrumx/electrumx/venv/bin/python3 /home/electrumx/electrumx/electrumx_rpc getinfo
 </code></pre>
+<h2 id="recent-updates">Recent Updates</h2>
+<h3 id="latest-changes-december-2025">Latest Changes (December 2025)</h3>
+<p>The Navio ElectrumX implementation has been updated with significant improvements:</p>
+<h4 id="output-hash-management">Output Hash Management</h4>
+<p>Navio now uses <strong>output hash indexing</strong> instead of traditional (transaction ID, output index) pairs. This change provides:</p>
+<ul>
+<li><strong>Faster lookups</strong>: Direct hash-based indexing for transaction outputs</li>
+<li><strong>Better privacy</strong>: Output hashes are used for BLSCT (BLS Confidential Transactions) compatibility</li>
+<li><strong>Improved performance</strong>: Optimized database queries for output retrieval</li>
+</ul>
+<p>When using output-related RPC methods, clients should now pass output hashes (as hexadecimal strings) instead of transaction IDs and output indices.</p>
+<h4 id="enhanced-error-handling">Enhanced Error Handling</h4>
+<p>The server now includes improved error handling and logging throughout:</p>
+<ul>
+<li>Better error messages for debugging</li>
+<li>More detailed logging for troubleshooting</li>
+<li>Graceful handling of edge cases and failures</li>
+</ul>
+<h4 id="new-rpc-methods">New RPC Methods</h4>
+<p>Three new RPC methods have been added to support efficient blockchain data retrieval:</p>
+<h5 id="blockchainblockget_txs_keys"><code>blockchain.block.get_txs_keys</code></h5>
+<p>Returns transaction keys for all transactions in a specific block.</p>
+<p><strong>Method:</strong> <code>blockchain.block.get_txs_keys</code></p>
+<p><strong>Parameters:</strong>
+- <code>height</code> (integer, required): The block height</p>
+<p><strong>Returns:</strong>
+A list of tuples, where each tuple contains:
+- <code>tx_hash</code> (string): Transaction hash in hexadecimal format
+- <code>keys</code> (object): Transaction keys data</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-json">[
+  [&quot;a1b2c3d4...&quot;, {&quot;key1&quot;: &quot;value1&quot;, &quot;key2&quot;: &quot;value2&quot;}],
+  [&quot;e5f6g7h8...&quot;, {&quot;key1&quot;: &quot;value1&quot;, &quot;key2&quot;: &quot;value2&quot;}]
+]
+</code></pre>
+<p><strong>Use Case:</strong>
+Useful for retrieving all transaction keys for a specific block in a single request, enabling efficient batch processing of block data.</p>
+<h5 id="blockchainblockget_range_txs_keys"><code>blockchain.block.get_range_txs_keys</code></h5>
+<p>Returns transaction keys for a range of blocks, automatically handling response size limits.</p>
+<p><strong>Method:</strong> <code>blockchain.block.get_range_txs_keys</code></p>
+<p><strong>Parameters:</strong>
+- <code>start_height</code> (integer, required): The starting block height</p>
+<p><strong>Returns:</strong>
+A JSON object containing:
+- <code>blocks</code> (array): List of blocks, where each block is a list of <code>(tx_hash, keys)</code> tuples
+- <code>next_height</code> (integer): The next block height to query (for pagination)</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-json">{
+  &quot;blocks&quot;: [
+    [
+      [&quot;a1b2c3d4...&quot;, {&quot;key1&quot;: &quot;value1&quot;}],
+      [&quot;e5f6g7h8...&quot;, {&quot;key1&quot;: &quot;value1&quot;}]
+    ],
+    [
+      [&quot;i9j0k1l2...&quot;, {&quot;key1&quot;: &quot;value1&quot;}]
+    ]
+  ],
+  &quot;next_height&quot;: 12350
+}
+</code></pre>
+<p><strong>Features:</strong>
+- Automatically batches multiple blocks in a single response
+- Respects <code>max_send</code> protocol limits
+- Returns <code>next_height</code> for efficient pagination
+- Optimized for parallel database queries</p>
+<p><strong>Use Case:</strong>
+Ideal for syncing transaction keys across multiple blocks efficiently, such as when initializing a wallet or performing bulk data synchronization.</p>
+<h5 id="blockchaintransactionget_output"><code>blockchain.transaction.get_output</code></h5>
+<p>Retrieves a serialized transaction output by its output hash.</p>
+<p><strong>Method:</strong> <code>blockchain.transaction.get_output</code></p>
+<p><strong>Parameters:</strong>
+- <code>output_hash</code> (string, required): The output hash as a hexadecimal string</p>
+<p><strong>Returns:</strong>
+- <code>serialized_output</code> (string): The serialized raw transaction output in hexadecimal format</p>
+<p><strong>Example Request:</strong></p>
+<pre><code class="language-json">{
+  &quot;method&quot;: &quot;blockchain.transaction.get_output&quot;,
+  &quot;params&quot;: [&quot;a1b2c3d4e5f6...&quot;]
+}
+</code></pre>
+<p><strong>Example Response:</strong></p>
+<pre><code class="language-json">&quot;0100000001a1b2c3d4...&quot;
+</code></pre>
+<p><strong>Features:</strong>
+- Fast retrieval using output hash indexing
+- Returns raw serialized output (no deserialization overhead)
+- Optimized for Navio's output hash-based system</p>
+<p><strong>Use Case:</strong>
+Essential for retrieving transaction outputs when you have the output hash (common in BLSCT transactions). This method is faster than traditional transaction lookup methods because it uses direct hash-based indexing.</p>
+<h4 id="performance-improvements">Performance Improvements</h4>
+<ul>
+<li><strong>Parallel key reading</strong>: Transaction keys are now read in parallel for better performance</li>
+<li><strong>Optimized database queries</strong>: Batch operations for multiple blocks</li>
+<li><strong>JSON serialization</strong>: Faster serialization/deserialization using JSON format</li>
+<li><strong>Response size management</strong>: Automatic trimming to respect protocol limits</li>
+</ul>
+<h4 id="removed-methods">Removed Methods</h4>
+<p>The following methods have been removed as part of the cleanup:
+- <code>blockchain.dao.subscribe</code>
+- <code>blockchain.stakervote.subscribe</code>
+- <code>blockchain.consensus.subscribe</code>
+- <code>blockchain.listproposals</code>
+- <code>blockchain.listconsultations</code>
+- <code>blockchain.getcfunddbstatehash</code></p>
+<p>These methods were specific to older DAO functionality and are no longer needed.</p>
 <h2 id="checking-logs-and-troubleshooting">Checking Logs and Troubleshooting</h2>
 <h3 id="check-the-logs">Check the Logs</h3>
 <ul>
@@ -305,6 +414,7 @@ sudo ufw allow 40004/tcp  # WSS
 <li><strong>Check the Log File</strong>: Review the log files for detailed error messages</li>
 <li><strong>Verify Service Status</strong>: Ensure the services are running using <code>systemctl status naviod</code> and <code>systemctl status navio-staker</code></li>
 <li><strong>Check Dependencies</strong>: Make sure all dependencies are installed properly. Re-run the script to ensure no steps were missed</li>
+<li><strong>Output not found errors</strong>: When using <code>blockchain.transaction.get_output</code>, ensure you're using the output hash (not transaction ID) in hexadecimal format</li>
 </ul>
 <h2 id="maintenance">Maintenance</h2>
 <ol>
